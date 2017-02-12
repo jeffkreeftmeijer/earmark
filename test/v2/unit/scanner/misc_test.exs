@@ -34,6 +34,13 @@ defmodule V2.Unit.Scanner.MiscTest do
        {:backtix, 2, '`'}, {:ws, 2, ' '}
      ]
     end
+
+    test "words, symbols and numbers" do
+      assert scan1("hello+ 42+1*3") == [
+       {:verbatim, 1, 'hello'}, {:plus, 1, '+'}, {:ws, 1, ' '}, {:number, 1, '42'}, {:plus, 1, '+'}, {:number, 1, '1'},
+       {:star, 1, '*'}, {:number, 1, '3'}]
+    end
+
     test "indents" do
       assert scan("    hello") == [{:nl, 0, nil}, {:ws, 1, '    '}, {:verbatim, 1, 'hello'}]
     end

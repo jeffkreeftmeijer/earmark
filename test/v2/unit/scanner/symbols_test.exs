@@ -29,5 +29,14 @@ defmodule V2.Unit.Scanner.SymbolsTest do
       [:star, :dash, :hash, :ws, :hash, :hash, :ws, :equal, :ws, :tilde, :ws, :lbracket, :lparen, :rbracket, :rparen, :laccolade, :raccolade, :backtix,
        :quote, :dquote]
     end
+
+    test "some more" do
+      assert tokens1(["|", "^ hello42"]) ==
+      [:bar, :nl, :caret, :ws, :verbatim, :number]
+    end
+
+    test "surely not done yet" do
+      assert tokens1("::< >&;+.!/@") == [:colon, :colon, :langle, :ws, :rangle, :amp, :semicolon, :plus, :dot, :exclam, :slash, :at]
+    end
   end
 end
