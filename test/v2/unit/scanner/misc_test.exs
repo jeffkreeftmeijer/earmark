@@ -1,7 +1,8 @@
-defmodule V2.Unit.ScannerTest do
+
+defmodule V2.Unit.Scanner.MiscTest do
   use ExUnit.Case
 
-  alias V2.Earmark.Scanner
+  import Support.Scanner
   
   @moduletag :v2
 
@@ -38,5 +39,4 @@ defmodule V2.Unit.ScannerTest do
     end
   end
 
-  defp scan(lines), do: Scanner.scan_lines(lines)
 end
