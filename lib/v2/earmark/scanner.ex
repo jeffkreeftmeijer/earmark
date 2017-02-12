@@ -29,5 +29,5 @@ defmodule V2.Earmark.Scanner do
   end
 
   defp add_lnbs(tokens, lnb), do: Enum.map(tokens, &add_lnb(&1, lnb))
-  defp add_lnb({tokent, tokenc}, lnb), do: {tokent, lnb, tokenc}
+  defp add_lnb({tokent, tokenc}, lnb), do: {tokent, lnb, to_string(tokenc)}
 end

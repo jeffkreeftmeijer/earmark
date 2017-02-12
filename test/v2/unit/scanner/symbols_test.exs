@@ -7,16 +7,16 @@ defmodule V2.Unit.Scanner.SymbolsTest do
 
   describe "underscores" do
     test "one" do
-      assert scan("_") == [{:nl, 0, nil}, {:underscore, 1, '_'}]
+      assert scan("_") == [{:nl, 0, nil}, {:underscore, 1, "_"}]
     end
     test "two" do
-      assert scan("__") == [{:nl, 0, nil}, {:underscore, 1, '_'}, {:underscore, 1, '_'}]
+      assert scan("__") == [{:nl, 0, nil}, {:underscore, 1, "_"}, {:underscore, 1, "_"}]
     end
   end
 
   describe "underscores and other symbols" do
     test "with star" do
-      assert scan1("_ *") == [{:underscore, 1, '_'}, {:ws, 1, ' '}, {:star, 1, '*'}] 
+      assert scan1("_ *") == [{:underscore, 1, "_"}, {:ws, 1, " "}, {:star, 1, "*"}] 
     end
     test "texas" do
       assert tokens1("*") == [:star]
