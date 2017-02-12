@@ -12,7 +12,7 @@
 -export([format_error/1]).
 
 %% User code. This is placed here to allow extra attributes.
--file("src/v2_lexer.xrl", 79).
+-file("src/v2_lexer.xrl", 82).
 
 -file("/home/robert/.asdf/installs/erlang/19.1/lib/erlang/lib/parsetools-2.1.3/include/leexinc.hrl", 14).
 
@@ -575,167 +575,167 @@ yyaction(32, TokenLen, YYtcs, _) ->
 yyaction(_, _, _, _) -> error.
 
 -compile({inline,yyaction_0/1}).
--file("src/v2_lexer.xrl", 43).
+-file("src/v2_lexer.xrl", 46).
 yyaction_0(TokenChars) ->
      { token, { ws, TokenChars } } .
 
 -compile({inline,yyaction_1/1}).
--file("src/v2_lexer.xrl", 44).
+-file("src/v2_lexer.xrl", 47).
 yyaction_1(TokenChars) ->
      { token, { at, TokenChars } } .
 
 -compile({inline,yyaction_2/1}).
--file("src/v2_lexer.xrl", 45).
+-file("src/v2_lexer.xrl", 48).
 yyaction_2(TokenChars) ->
      { token, { slash, TokenChars } } .
 
 -compile({inline,yyaction_3/1}).
--file("src/v2_lexer.xrl", 46).
+-file("src/v2_lexer.xrl", 49).
 yyaction_3(TokenChars) ->
      { token, { exclam, TokenChars } } .
 
 -compile({inline,yyaction_4/1}).
--file("src/v2_lexer.xrl", 47).
+-file("src/v2_lexer.xrl", 50).
 yyaction_4(TokenChars) ->
      { token, { dot, TokenChars } } .
 
 -compile({inline,yyaction_5/1}).
--file("src/v2_lexer.xrl", 48).
+-file("src/v2_lexer.xrl", 51).
 yyaction_5(TokenChars) ->
      { token, { plus, TokenChars } } .
 
 -compile({inline,yyaction_6/1}).
--file("src/v2_lexer.xrl", 49).
+-file("src/v2_lexer.xrl", 52).
 yyaction_6(TokenChars) ->
      { token, { semicolon, TokenChars } } .
 
 -compile({inline,yyaction_7/1}).
--file("src/v2_lexer.xrl", 50).
+-file("src/v2_lexer.xrl", 53).
 yyaction_7(TokenChars) ->
      { token, { amp, TokenChars } } .
 
 -compile({inline,yyaction_8/1}).
--file("src/v2_lexer.xrl", 51).
+-file("src/v2_lexer.xrl", 54).
 yyaction_8(TokenChars) ->
      { token, { rangle, TokenChars } } .
 
 -compile({inline,yyaction_9/1}).
--file("src/v2_lexer.xrl", 52).
+-file("src/v2_lexer.xrl", 55).
 yyaction_9(TokenChars) ->
      { token, { langle, TokenChars } } .
 
 -compile({inline,yyaction_10/1}).
--file("src/v2_lexer.xrl", 53).
+-file("src/v2_lexer.xrl", 56).
 yyaction_10(TokenChars) ->
      { token, { colon, TokenChars } } .
 
 -compile({inline,yyaction_11/1}).
--file("src/v2_lexer.xrl", 54).
+-file("src/v2_lexer.xrl", 57).
 yyaction_11(TokenChars) ->
      { token, { caret, TokenChars } } .
 
 -compile({inline,yyaction_12/1}).
--file("src/v2_lexer.xrl", 55).
+-file("src/v2_lexer.xrl", 58).
 yyaction_12(TokenChars) ->
      { token, { number, TokenChars } } .
 
 -compile({inline,yyaction_13/1}).
--file("src/v2_lexer.xrl", 56).
+-file("src/v2_lexer.xrl", 59).
 yyaction_13(TokenChars) ->
      { token, { bar, TokenChars } } .
 
 -compile({inline,yyaction_14/1}).
--file("src/v2_lexer.xrl", 57).
+-file("src/v2_lexer.xrl", 60).
 yyaction_14(TokenChars) ->
      { token, { dquote, TokenChars } } .
 
 -compile({inline,yyaction_15/1}).
--file("src/v2_lexer.xrl", 58).
+-file("src/v2_lexer.xrl", 61).
 yyaction_15(TokenChars) ->
      { token, { quote, TokenChars } } .
 
 -compile({inline,yyaction_16/1}).
--file("src/v2_lexer.xrl", 59).
+-file("src/v2_lexer.xrl", 62).
 yyaction_16(TokenChars) ->
      { token, { raccolade, TokenChars } } .
 
 -compile({inline,yyaction_17/1}).
--file("src/v2_lexer.xrl", 60).
+-file("src/v2_lexer.xrl", 63).
 yyaction_17(TokenChars) ->
      { token, { laccolade, TokenChars } } .
 
 -compile({inline,yyaction_18/1}).
--file("src/v2_lexer.xrl", 61).
+-file("src/v2_lexer.xrl", 64).
 yyaction_18(TokenChars) ->
      { token, { rparen, TokenChars } } .
 
 -compile({inline,yyaction_19/1}).
--file("src/v2_lexer.xrl", 62).
+-file("src/v2_lexer.xrl", 65).
 yyaction_19(TokenChars) ->
      { token, { lparen, TokenChars } } .
 
 -compile({inline,yyaction_20/1}).
--file("src/v2_lexer.xrl", 63).
+-file("src/v2_lexer.xrl", 66).
 yyaction_20(TokenChars) ->
      { token, { rbracket, TokenChars } } .
 
 -compile({inline,yyaction_21/1}).
--file("src/v2_lexer.xrl", 64).
+-file("src/v2_lexer.xrl", 67).
 yyaction_21(TokenChars) ->
      { token, { lbracket, TokenChars } } .
 
 -compile({inline,yyaction_22/1}).
--file("src/v2_lexer.xrl", 65).
+-file("src/v2_lexer.xrl", 68).
 yyaction_22(TokenChars) ->
      { token, { tilde, TokenChars } } .
 
 -compile({inline,yyaction_23/1}).
--file("src/v2_lexer.xrl", 66).
+-file("src/v2_lexer.xrl", 69).
 yyaction_23(TokenChars) ->
      { token, { equal, TokenChars } } .
 
 -compile({inline,yyaction_24/1}).
--file("src/v2_lexer.xrl", 67).
+-file("src/v2_lexer.xrl", 70).
 yyaction_24(TokenChars) ->
      { token, { hash, TokenChars } } .
 
 -compile({inline,yyaction_25/1}).
--file("src/v2_lexer.xrl", 68).
+-file("src/v2_lexer.xrl", 71).
 yyaction_25(TokenChars) ->
      { token, { dash, TokenChars } } .
 
 -compile({inline,yyaction_26/1}).
--file("src/v2_lexer.xrl", 69).
+-file("src/v2_lexer.xrl", 72).
 yyaction_26(TokenChars) ->
      { token, { underscore, TokenChars } } .
 
 -compile({inline,yyaction_27/1}).
--file("src/v2_lexer.xrl", 70).
+-file("src/v2_lexer.xrl", 73).
 yyaction_27(TokenChars) ->
      { token, { star, TokenChars } } .
 
 -compile({inline,yyaction_28/1}).
--file("src/v2_lexer.xrl", 71).
+-file("src/v2_lexer.xrl", 74).
 yyaction_28(TokenChars) ->
      { token, { verbatim, TokenChars } } .
 
 -compile({inline,yyaction_29/0}).
--file("src/v2_lexer.xrl", 72).
+-file("src/v2_lexer.xrl", 75).
 yyaction_29() ->
      { token, { verbatim, '`' } } .
 
 -compile({inline,yyaction_30/1}).
--file("src/v2_lexer.xrl", 73).
+-file("src/v2_lexer.xrl", 76).
 yyaction_30(TokenChars) ->
      { token, { verbatim, TokenChars } } .
 
 -compile({inline,yyaction_31/1}).
--file("src/v2_lexer.xrl", 74).
+-file("src/v2_lexer.xrl", 77).
 yyaction_31(TokenChars) ->
      { token, { backtix, TokenChars } } .
 
 -compile({inline,yyaction_32/1}).
--file("src/v2_lexer.xrl", 75).
+-file("src/v2_lexer.xrl", 78).
 yyaction_32(TokenChars) ->
      { token, { verbatim, TokenChars } } .
 
