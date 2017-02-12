@@ -10,11 +10,18 @@ defmodule Earmark do
 
   ### API
 
-        {html_doc, error_messages} = Earmark.as_html(markdown)
+      * `Earmark.as_html`
+        {:ok, html_doc, []}                = Earmark.as_html(markdown)
+        {:error, html_doc, error_messages} = Earmark.as_html(markdown)
 
-        {html_doc, error_messages} = Earmark.as_html!(markdown, options)
+      * `Earmark.as_html!`
+        html_doc = Earmark.as_html!(markdown, options)
 
-  Options can be passed into `as_html` according to the documentation.
+        Any error messages are printed to _stderr_.
+
+  #### Options:
+  #
+  Options can be passed into `as_html` or `as_html!` according to the documentation.
 
         html_doc = Earmark.as_html!(markdown)
 
@@ -148,7 +155,7 @@ defmodule Earmark do
   * Rendering of block and inline elements.
 
     Block or void HTML elements that are at the absolute beginning of a line end
-    the preceeding paragraph.
+    the preceding paragraph.
 
     Thusly
 
@@ -273,7 +280,10 @@ defmodule Earmark do
   """
   @spec as_html(String.t | list(String.t), %Options{}) :: {String.t, list(String.t)}
   def as_html(lines, options \\ %Options{}) do
-    _as_html(lines, options)
+    case _as_html(lines, options) do
+      { html, [] }     -> {:ok, html, []}
+      { html, errors } -> {:error, html, errors}
+    end
   end
 
   @doc """
@@ -316,8 +326,10 @@ defmodule Earmark do
               |> Context.add_messages(messages)
 
     if options.footnotes do
-      { blocks, footnotes } = Earmark.Parser.handle_footnotes(blocks, options, mapper)
-      context = put_in(context.footnotes, footnotes)
+      { blocks, footnotes, undefined } = Earmark.Parser.handle_footnotes(blocks, options, mapper)
+      context = 
+        put_in(context.footnotes, footnotes) |>
+        Context.add_messages(undefined)
       { blocks, context }
     else
       { blocks, context }
@@ -327,6 +339,14 @@ defmodule Earmark do
     lines
     |> String.split(~r{\r\n?|\n})
     |> parse(options)
+  end
+
+  @doc """
+    Accesses current hex version of the `Earmark` application. Convenience for
+    `iex` usage.
+  """
+  def version() do
+    with {:ok, version} = :application.get_key(:earmark, :vsn), do: version
   end
 
   @doc false

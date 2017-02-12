@@ -1,13 +1,39 @@
-# 1.1.0 ????/??/??
+# 1.1.2 
 
-* PR from Pragdave
-* PR from christopheradams
+*  [PR](//https://github.com/pragdave/earmark/pull/125) from vyachkonovalov 
 
-* Fixes for issues
-  - #
 
 ## Kudos:
-  Christopher Adams (christopheradams)
+
+  [vyachkonovalov](https://github.com/vyachkonovalov)
+
+# 1.1.1 2017/02/03
+
+* PR from Natronium pointing out issue #123
+
+* Fixes for issues
+  - #123
+
+## Kudos:
+
+  [Natronium](https://github.com/Natronium)  
+
+# 1.1.0 2017/01/22
+
+* PR from Michael Pope
+* PR from Pragdave
+* PR from christopheradams
+* PR from [AndrewDryga](https://github.com/AndrewDryga)
+
+* Fixes for issues
+  - #106
+  - #110
+  - #114
+
+## Kudos:
+  [AndrewDryga](https://github.com/AndrewDryga), [Christopher Adams](https://github.com/christopheradams),
+  [Michael Pope](https://github.com/amorphid)
+
 
 # 1.0.3 2016/11/02
 
