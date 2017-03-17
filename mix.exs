@@ -61,7 +61,8 @@ defmodule Earmark.Mixfile do
     [ main_module: Earmark.CLI ]
   end
 
-  defp elixirc_paths(:test), do: [ "lib", "test/support" ]
+  defp elixirc_paths(:test), do: [ "lib", "gfm/gfm_support", "test/support" ]
+  defp elixirc_paths(:dev),  do: [ "lib", "gfm/gfm_support" ]
   defp elixirc_paths(_),     do: [ "lib" ]
 end
 
