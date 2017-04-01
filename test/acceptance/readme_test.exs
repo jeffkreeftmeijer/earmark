@@ -1,5 +1,5 @@
 defmodule Acceptance.ReadmeTest do
-  use ExUnit.Case
+  use Support.AcceptanceTestcase
   
   doctest Earmark
 end

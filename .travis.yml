@@ -6,6 +6,8 @@ branches:
     - master
     - development
 
+script: make test
+
 elixir:
   - 1.4
 otp_release:

@@ -1,5 +1,5 @@
 defmodule Acceptance.HtmlBlocksTest do
-  use ExUnit.Case
+  use Support.AcceptanceTestcase
   
   import Support.Helpers, only: [as_html: 1]
 

@@ -24,6 +24,7 @@ defmodule Earmark.Mixfile do
     [
       { :credo,    "~> 0.6", only: [ :dev, :test ] },
       { :dialyxir, "~> 0.4", only: [ :dev, :test ] },
+      { :private,  "~> 0.1" },
    ]
   end
 
@@ -62,6 +63,7 @@ defmodule Earmark.Mixfile do
   end
 
   defp elixirc_paths(:test), do: [ "lib", "test/support" ]
+  defp elixirc_paths(:acceptance_test), do: [ "lib", "test/support" ]
   defp elixirc_paths(_),     do: [ "lib" ]
 end
 

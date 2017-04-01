@@ -1,5 +1,5 @@
 defmodule Acceptance.AtxHeadersTest do
-  use ExUnit.Case
+  use Support.AcceptanceTestcase
   
   # describe "ATX headers" do
 

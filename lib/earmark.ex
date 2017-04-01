@@ -1,4 +1,5 @@
 defmodule Earmark do
+  use Private
 
   @moduledoc """
 
@@ -316,12 +317,6 @@ defmodule Earmark do
     html
   end
 
-  defp _as_html(lines, options) do
-    start_link()
-    {blocks, context} = parse(lines, options)
-    options.renderer.render(blocks, context)
-  end
-
   @doc """
   Given a markdown document (as either a list of lines or
   a string containing newlines), return a parse tree and
@@ -368,5 +363,13 @@ defmodule Earmark do
    collection
     |> Enum.map(fn item -> Task.async(fn -> func.(item) end) end)
     |> Enum.map(&Task.await/1)
+  end
+
+  private do
+    def _as_html(lines, options) do
+      start_link()
+      {blocks, context} = parse(lines, options)
+      options.renderer.render(blocks, context)
+    end
   end
 end

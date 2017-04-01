@@ -1,5 +1,5 @@
 defmodule Acceptance.BlockQuotesTest do
-  use ExUnit.Case
+  use Support.AcceptanceTestcase
 
   # describe "Block Quotes" do
     test "quote my block" do
