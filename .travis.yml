@@ -6,7 +6,7 @@ branches:
     - master
     - development
 
-script: make test
+script: make
 
 elixir:
   - 1.4
