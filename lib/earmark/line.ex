@@ -1,4 +1,5 @@
 defmodule Earmark.Line do
+  use Private
 
   alias Earmark.Helpers
 
@@ -82,10 +83,6 @@ defmodule Earmark.Line do
     |> Earmark.pmap( fn (line) ->  type_of(line, options, recursive) end)
   end
 
-  defp lines_with_count lines, offset do
-    Enum.zip lines, offset..(offset+Enum.count(lines))
-  end
-
   def type_of(line, recursive)
   when is_boolean(recursive), do: type_of(line, %Earmark.Options{}, recursive)
 
@@ -104,134 +101,141 @@ defmodule Earmark.Line do
     end
   end
 
-  defp _type_of(line, options=%Earmark.Options{}, recursive) do
-    cond do
-      line =~ ~r/^\s*$/ ->
-        %Blank{}
 
-      line =~ ~r/^ \s{0,3} ( <! (?: -- .*? -- \s* )+ > ) $/x && !recursive ->
-        %HtmlComment{complete: true}
-
-      line =~ ~r/^ \s{0,3} ( <!-- .*? ) $/x && !recursive ->
-        %HtmlComment{complete: false}
-
-      line =~ ~r/^ \s{0,3} (?:-\s?){3,} $/x ->
-        %Ruler{type: "-" }
-
-      line =~ ~r/^ \s{0,3} (?:\*\s?){3,} $/x ->
-        %Ruler{type: "*" }
-
-      line =~ ~r/^ \s{0,3} (?:_\s?){3,} $/x ->
-        %Ruler{type: "_" }
-
-      match = Regex.run(~R/^(#{1,6})\s+(?|([^#]+)#*$|(.*))/u, line) ->
-        [ _, level, heading ] = match
-        %Heading{level: String.length(level), content: String.strip(heading) }
-
-      match = Regex.run(~r/^>(?|(\s*)$|\s(.*))/, line) ->
-        [ _, quote ] = match
-        %BlockQuote{content: quote }
-
-      match = Regex.run(~r/^((?:\s\s\s\s)+)(.*)/, line) ->
-        [ _, spaces, code ] = match
-        %Indent{level: div(String.length(spaces), 4), content: code }
-
-      match = Regex.run(~r/^\s*(```|~~~)\s*([\w\-]*)\s*$/u, line) ->
-        [ _, fence, language ] = match
-        %Fence{delimiter: fence, language: language}
-
-      #   Although no block tags I still think they should close a preceding para as do many other
-      #   implementations.
-      (match = Regex.run(@void_tag_rgx, line)) && !recursive ->
-        [ _, tag ] = match
-
-        %HtmlOneLine{tag: tag, content: line}
-
-      (match = Regex.run(~r{^<([-\w]+?)(?:\s.*)?>.*</\1>}, line)) && !recursive ->
-        [ _, tag ] = match
-          if block_tag?(tag), do: %HtmlOneLine{tag: tag, content: line},
-            else: %Text{content: line}
-
-      (match = Regex.run(~r{^<([-\w]+?)(?:\s.*)?/>.*}, line)) && !recursive ->
-        [ _, tag ] = match
-          if block_tag?(tag), do: %HtmlOneLine{tag: tag, content: line},
-            else: %Text{content: line}
-
-      (match = Regex.run(~r/^<([-\w]+?)(?:\s.*)?>/, line)) && !recursive ->
-        [ _, tag ] = match
-        %HtmlOpenTag{tag: tag, content: line}
-
-      (match = Regex.run(~r/^<\/([-\w]+?)>/, line)) && !recursive ->
-        [ _, tag ] = match
-        %HtmlCloseTag{tag: tag}
-
-      match = Regex.run(@id_re, line) ->
-        [ _, id, url | title ] = match
-        title = if(length(title) == 0, do: "", else: hd(title))
-        %IdDef{id: id, url: url, title: title }
-
-      match = options.footnotes && Regex.run(~r/^\[\^([^\s\]]+)\]:\s+(.*)/, line) ->
-        [ _, id, first_line ] = match
-        %FnDef{id: id, content: first_line }
-
-      match = Regex.run(~r/^(\s{0,3})([-*+])\s+(.*)/, line) ->
-        [ _, leading, bullet, text ] = match
-        %ListItem{type:          :ul,
-                  bullet:         bullet,
-                  content:        text,
-                  initial_indent: String.length(leading) }
-
-      match = Regex.run(~r/^(\s{0,3})(\d+\.)\s+(.*)/, line) ->
-        [ _, leading, bullet, text ] = match
-        %ListItem{type: :ol,
-                  bullet: bullet,
-                  content: text,
-                  initial_indent: String.length(leading) }
-
-      match = Regex.run(~r/^ \s{0,3} \| (?: [^|]+ \|)+ \s* $ /x, line) ->
-        [ body ] = match
-        body = body
-               |> String.strip
-               |> String.strip(?|)
-        columns = split_table_columns(body)
-        %TableLine{content: line, columns: columns}
-
-      line =~ ~r/ \s \| \s /x ->
-        columns = split_table_columns(line)
-        %TableLine{content: line, columns: columns}
-
-      match = Regex.run(~r/^(=|-)+\s*$/, line) ->
-        [ _, type ] = match
-        level = if(String.starts_with?(type, "="), do: 1, else: 2)
-        %SetextUnderlineHeading{level: level }
-
-      match = Regex.run(~r<^\s{0,3}{:(\s*[^}]+)}\s*$>, line) ->
-        [ _, ial ] = match
-        %Ial{attrs: String.strip(ial), verbatim: ial}
-
-      match = Regex.run(~r<^\$\$(\w*)$>, line) ->
-        [_, prefix] = match
-        %Plugin{ content: "", prefix: prefix }
-
-      match = Regex.run(~r<^\$\$(\w*)\s(.*)$>, line) ->
-        [_, prefix, content] = match
-        %Plugin{ content: content, prefix: prefix }
-
-      true ->
-        %Text{content: line }
+  private do
+    defp lines_with_count lines, offset do
+      Enum.zip lines, offset..(offset+Enum.count(lines))
     end
-  end
+
+    defp _type_of(line, options=%Earmark.Options{}, recursive) do
+      cond do
+        line =~ ~r/^\s*$/ ->
+          %Blank{}
+
+        line =~ ~r/^ \s{0,3} ( <! (?: -- .*? -- \s* )+ > ) $/x && !recursive ->
+          %HtmlComment{complete: true}
+
+        line =~ ~r/^ \s{0,3} ( <!-- .*? ) $/x && !recursive ->
+          %HtmlComment{complete: false}
+
+        line =~ ~r/^ \s{0,3} (?:-\s?){3,} $/x ->
+          %Ruler{type: "-" }
+
+        line =~ ~r/^ \s{0,3} (?:\*\s?){3,} $/x ->
+          %Ruler{type: "*" }
+
+        line =~ ~r/^ \s{0,3} (?:_\s?){3,} $/x ->
+          %Ruler{type: "_" }
+
+        match = Regex.run(~R/^(#{1,6})\s+(?|([^#]+)#*$|(.*))/u, line) ->
+          [ _, level, heading ] = match
+          %Heading{level: String.length(level), content: String.strip(heading) }
+
+        match = Regex.run(~r/^>(?|(\s*)$|\s(.*))/, line) ->
+          [ _, quote ] = match
+          %BlockQuote{content: quote }
+
+        match = Regex.run(~r/^((?:\s\s\s\s)+)(.*)/, line) ->
+          [ _, spaces, code ] = match
+          %Indent{level: div(String.length(spaces), 4), content: code }
+
+        match = Regex.run(~r/^\s*(```|~~~)\s*([\w\-]*)\s*$/u, line) ->
+          [ _, fence, language ] = match
+          %Fence{delimiter: fence, language: language}
+
+        #   Although no block tags I still think they should close a preceding para as do many other
+        #   implementations.
+        (match = Regex.run(@void_tag_rgx, line)) && !recursive ->
+          [ _, tag ] = match
+
+          %HtmlOneLine{tag: tag, content: line}
+
+        (match = Regex.run(~r{^<([-\w]+?)(?:\s.*)?>.*</\1>}, line)) && !recursive ->
+          [ _, tag ] = match
+            if block_tag?(tag), do: %HtmlOneLine{tag: tag, content: line},
+              else: %Text{content: line}
+
+        (match = Regex.run(~r{^<([-\w]+?)(?:\s.*)?/>.*}, line)) && !recursive ->
+          [ _, tag ] = match
+            if block_tag?(tag), do: %HtmlOneLine{tag: tag, content: line},
+              else: %Text{content: line}
+
+        (match = Regex.run(~r/^<([-\w]+?)(?:\s.*)?>/, line)) && !recursive ->
+          [ _, tag ] = match
+          %HtmlOpenTag{tag: tag, content: line}
+
+        (match = Regex.run(~r/^<\/([-\w]+?)>/, line)) && !recursive ->
+          [ _, tag ] = match
+          %HtmlCloseTag{tag: tag}
+
+        match = Regex.run(@id_re, line) ->
+          [ _, id, url | title ] = match
+          title = if(length(title) == 0, do: "", else: hd(title))
+          %IdDef{id: id, url: url, title: title }
+
+        match = options.footnotes && Regex.run(~r/^\[\^([^\s\]]+)\]:\s+(.*)/, line) ->
+          [ _, id, first_line ] = match
+          %FnDef{id: id, content: first_line }
+
+        match = Regex.run(~r/^(\s{0,3})([-*+])\s+(.*)/, line) ->
+          [ _, leading, bullet, text ] = match
+          %ListItem{type:          :ul,
+                    bullet:         bullet,
+                    content:        text,
+                    initial_indent: String.length(leading) }
+
+        match = Regex.run(~r/^(\s{0,3})(\d+\.)\s+(.*)/, line) ->
+          [ _, leading, bullet, text ] = match
+          %ListItem{type: :ol,
+                    bullet: bullet,
+                    content: text,
+                    initial_indent: String.length(leading) }
+
+        match = Regex.run(~r/^ \s{0,3} \| (?: [^|]+ \|)+ \s* $ /x, line) ->
+          [ body ] = match
+          body = body
+                 |> String.strip
+                 |> String.strip(?|)
+          columns = split_table_columns(body)
+          %TableLine{content: line, columns: columns}
+
+        line =~ ~r/ \s \| \s /x ->
+          columns = split_table_columns(line)
+          %TableLine{content: line, columns: columns}
+
+        match = Regex.run(~r/^(=|-)+\s*$/, line) ->
+          [ _, type ] = match
+          level = if(String.starts_with?(type, "="), do: 1, else: 2)
+          %SetextUnderlineHeading{level: level }
+
+        match = Regex.run(~r<^\s{0,3}{:(\s*[^}]+)}\s*$>, line) ->
+          [ _, ial ] = match
+          %Ial{attrs: String.strip(ial), verbatim: ial}
+
+        match = Regex.run(~r<^\$\$(\w*)$>, line) ->
+          [_, prefix] = match
+          %Plugin{ content: "", prefix: prefix }
+
+        match = Regex.run(~r<^\$\$(\w*)\s(.*)$>, line) ->
+          [_, prefix, content] = match
+          %Plugin{ content: content, prefix: prefix }
+
+        true ->
+          %Text{content: line }
+      end
+    end
 
 
-  @block_tags ~w< address article aside blockquote canvas dd div dl fieldset figcaption h1 h2 h3 h4 h5 h6 header hgroup li main nav noscript ol output p pre section table tfoot ul video> |>
-    Enum.into( MapSet.new() )
-  defp block_tag?(tag), do: MapSet.member?(@block_tags, tag)
+    @block_tags ~w< address article aside blockquote canvas dd div dl fieldset figcaption h1 h2 h3 h4 h5 h6 header hgroup li main nav noscript ol output p pre section table tfoot ul video> |>
+      Enum.into( MapSet.new() )
+    defp block_tag?(tag), do: MapSet.member?(@block_tags, tag)
 
-  defp split_table_columns(line) do
-    line
-    |> String.split(~r{(?<!\\)\|})
-    |> Enum.map(&String.strip/1)
-    |> Enum.map(fn col -> Regex.replace(~r{\\\|}, col, "|") end)
+    defp split_table_columns(line) do
+      line
+      |> String.split(~r{(?<!\\)\|})
+      |> Enum.map(&String.strip/1)
+      |> Enum.map(fn col -> Regex.replace(~r{\\\|}, col, "|") end)
+    end
   end
 
 end

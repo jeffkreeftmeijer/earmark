@@ -1,4 +1,5 @@
 defmodule Earmark.Helpers do
+  use Private
 
   @doc """
   Expand tabs to multiples of 4 columns
@@ -7,23 +8,12 @@ defmodule Earmark.Helpers do
     Regex.replace(~r{(.*?)\t}, line, &expander/2)
   end
 
-  defp expander(_, leader) do
-    extra = 4 - rem(String.length(leader), 4)
-    leader <> pad(extra)
-  end
-
   @doc """
   Remove newlines at end of line
   """
   def remove_line_ending(line) do
     line |> String.rstrip(?\n) |> String.rstrip(?\r)
   end
-
-  defp pad(1), do: " "
-  defp pad(2), do: "  "
-  defp pad(3), do: "   "
-  defp pad(4), do: "    "
-
   @doc """
   `Regex.replace` with the arguments in the correct order
   """
@@ -53,13 +43,27 @@ defmodule Earmark.Helpers do
   def escape(html, false), do: _escape(Regex.replace(~r{&(?!#?\w+;)}, html, "&amp;"))
   def escape(html, _), do: _escape(String.replace(html, "&", "&amp;"))
 
-  defp _escape(html) do
-    html
-    |> String.replace("<",  "&lt;")
-    |> String.replace(">",  "&gt;")
-    |> String.replace("\"", "&quot;")
-    |> String.replace("'",  "&#39;")
-  end
 
+  private do
+
+    defp expander(_, leader) do
+      extra = 4 - rem(String.length(leader), 4)
+      leader <> pad(extra)
+    end
+
+    defp _escape(html) do
+      html
+      |> String.replace("<",  "&lt;")
+      |> String.replace(">",  "&gt;")
+      |> String.replace("\"", "&quot;")
+      |> String.replace("'",  "&#39;")
+    end
+
+    defp pad(1), do: " "
+    defp pad(2), do: "  "
+    defp pad(3), do: "   "
+    defp pad(4), do: "    "
+
+  end
 
 end
