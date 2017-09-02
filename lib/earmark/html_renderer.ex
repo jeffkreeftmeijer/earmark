@@ -69,6 +69,7 @@ defmodule Earmark.HtmlRenderer do
         anchor = content
         |> String.downcase
         |> String.replace(~r{\s}, "-")
+        |> String.replace(~r{[^\w-]}, "")
 
         ~s{<a id="#{anchor}"></a>#{heading}}
       _ -> heading
