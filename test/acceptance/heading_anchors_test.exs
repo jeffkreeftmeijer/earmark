@@ -18,4 +18,12 @@ defmodule Acceptance.HeadingAnchorsTest do
 
     assert as_html(markdown, heading_anchors: true) == {:ok, html, messages}
   end
+
+  test "with spaces in the heading's contents" do
+    markdown = "# foo bar baz"
+    html     = ~s{<a id=\"foo-bar-baz\"></a><h1>foo bar baz</h1>\n}
+    messages = []
+
+    assert as_html(markdown, heading_anchors: true) == {:ok, html, messages}
+  end
 end
