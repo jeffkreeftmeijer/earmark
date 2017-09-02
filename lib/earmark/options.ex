@@ -6,6 +6,7 @@ defmodule Earmark.Options do
              gfm: true, breaks: false, pedantic: false,
              smartypants: true, sanitize: false,
              footnotes: false, footnote_offset: 1,
+             heading_anchors: false,
 
              # additional prefies for class of code blocks
              code_class_prefix: nil,

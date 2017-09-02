@@ -59,9 +59,16 @@ defmodule Earmark.HtmlRenderer do
   ###########
   # Heading #
   ###########
-  defp render_block(%Block.Heading{lnb: lnb, level: level, content: content, attrs: attrs}, context) do
+  defp render_block(%Block.Heading{lnb: lnb, level: level, content: content, attrs: attrs}, context = %Context{options: options}) do
     converted = convert(content, lnb, context)
-    html = "<h#{level}>#{converted.value}</h#{level}>\n"
+
+    heading = "<h#{level}>#{converted.value}</h#{level}>\n"
+
+    html = case options.heading_anchors do
+      true -> ~s{<a id="#{content}"></a>#{heading}}
+      _ -> heading
+    end
+
     add_attrs!(converted, html, attrs, [], lnb)
   end
 
