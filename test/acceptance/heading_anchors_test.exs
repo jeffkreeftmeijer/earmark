@@ -10,4 +10,12 @@ defmodule Acceptance.HeadingAnchorsTest do
 
     assert as_html(markdown, heading_anchors: true) == {:ok, html, messages}
   end
+
+  test "with capitalized letters in the heading's contents" do
+    markdown = "# Foo"
+    html     = ~s{<a id=\"foo\"></a><h1>Foo</h1>\n}
+    messages = []
+
+    assert as_html(markdown, heading_anchors: true) == {:ok, html, messages}
+  end
 end

@@ -65,7 +65,11 @@ defmodule Earmark.HtmlRenderer do
     heading = "<h#{level}>#{converted.value}</h#{level}>\n"
 
     html = case options.heading_anchors do
-      true -> ~s{<a id="#{content}"></a>#{heading}}
+      true ->
+        anchor = content
+        |> String.downcase
+
+        ~s{<a id="#{anchor}"></a>#{heading}}
       _ -> heading
     end
 
